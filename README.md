@@ -1,13 +1,25 @@
 # Sensitive-lexicon (中文敏感词库)
 
-![Commit Activity](https://img.shields.io/github/commit-activity/y/Konsheng/Sensitive-lexicon)
-![License: MIT](https://img.shields.io/github/license/Konsheng/Sensitive-lexicon)
-![GitHub stars](https://img.shields.io/github/stars/Konsheng/Sensitive-lexicon)
+![Commit Activity](https://img.shields.io/github/commit-activity/y/imlucan/Sensitive-lexicon)
+![License: MIT](https://img.shields.io/github/license/imlucan/Sensitive-lexicon)
+![GitHub stars](https://img.shields.io/github/stars/imlucan/Sensitive-lexicon)
 
 > **一个持续更新的中文敏感词库，帮助开发者和内容审核者快速识别并过滤不当文本。**
 
+## 本 Fork 说明
+
+本仓库基于原 Sensitive-lexicon 公开项目 fork 而来。
+
+本 fork 在 `dev` 分支上保留了原仓库曾经提供的 Fiber + fuzzy-patricia 敏感词检测服务，并额外做了以下调整：
+
+* 同步原仓库 `main` 分支中较新的 `Vocabulary/` 词库变更。
+* 新增 `Vocabulary/新思想启蒙.txt`，并按上游 `main` 调整 `Vocabulary/其他词库.txt`。
+* 修复 `/detect` 接口只能检测“输入文本等于词库词”的问题，现在可以检测长文本中包含的词库词。
+* 增加回归测试，覆盖长文本中命中词库词的场景。
+
 ## 目录
 
+* [本 Fork 说明](#本-fork-说明)
 * [简介](#简介)
 * [功能特点](#功能特点)
 * [目录结构](#目录结构)
@@ -49,7 +61,7 @@ Sensitive-lexicon/
 
 ```bash
 # 示例：使用 Git 克隆
-git clone https://github.com/Konsheng/Sensitive-lexicon.git
+git clone https://github.com/imlucan/Sensitive-lexicon.git
 ```
 
 ### 贡献词汇
@@ -76,11 +88,11 @@ git clone https://github.com/Konsheng/Sensitive-lexicon.git
 感谢所有贡献者的关注与支持！
 
 ## Star History
-<a href="https://star-history.com/#konsheng/Sensitive-lexicon&Date">
+<a href="https://star-history.com/#imlucan/Sensitive-lexicon&Date">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=konsheng/Sensitive-lexicon&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=konsheng/Sensitive-lexicon&type=Date" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=konsheng/Sensitive-lexicon&type=Date" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=imlucan/Sensitive-lexicon&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=imlucan/Sensitive-lexicon&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=imlucan/Sensitive-lexicon&type=Date" />
   </picture>
 </a>
 
