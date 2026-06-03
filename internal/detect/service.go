@@ -60,8 +60,7 @@ func (s *Service) Detect(req DetectRequest) DetectResponse {
 
 	unique := make(map[string]Match)
 
-	// Substring hits: for each codepoint window from input, find lexicon entries containing it
-	s.store.ForEachSubstringMatch(text, func(word string) bool {
+	s.store.ForEachTextMatch(text, func(word string) bool {
 		unique[word] = Match{Word: word, Type: "substring"}
 		return true
 	})

@@ -96,6 +96,27 @@ func (s *Store) ForEachSubstringMatch(query string, visit func(word string) bool
 	})
 }
 
+// ForEachTextMatch visits lexicon words that appear inside the given text.
+func (s *Store) ForEachTextMatch(text string, visit func(word string) bool) {
+	s.mu.RLock()
+	tr := s.trie
+	s.mu.RUnlock()
+	if tr == nil || text == "" {
+		return
+	}
+	runes := []rune(text)
+	for i := 0; i < len(runes); i++ {
+		keepGoing := true
+		tr.VisitPrefixes(patricia.Prefix(string(runes[i:])), false, func(prefix patricia.Prefix, _ patricia.Item) error {
+			keepGoing = visit(string(prefix))
+			return nil
+		})
+		if !keepGoing {
+			return
+		}
+	}
+}
+
 // ForEachFuzzyMatch visits keys with fuzzy distance within maxDistance to query.
 func (s *Store) ForEachFuzzyMatch(query string, maxDistance int, visit func(word string, distance int) bool) {
 	s.mu.RLock()
@@ -116,26 +137,13 @@ func (s *Store) ForEachFuzzyMatch(query string, maxDistance int, visit func(word
 // HasAnyInText returns true if any lexicon word is a substring of the given text.
 // It scans each rune offset and visits prefixes against the trie.
 func (s *Store) HasAnyInText(text string) (bool, string) {
-	s.mu.RLock()
-	tr := s.trie
-	s.mu.RUnlock()
-	if tr == nil || text == "" {
-		return false, ""
-	}
-	runes := []rune(text)
-	n := len(runes)
-	for i := 0; i < n; i++ {
-		suffix := string(runes[i:])
-		foundWord := ""
-		tr.VisitPrefixes(patricia.Prefix(suffix), false, func(prefix patricia.Prefix, _ patricia.Item) error {
-			if foundWord == "" {
-				foundWord = string(prefix)
-			}
-			return nil
-		})
-		if foundWord != "" {
-			return true, foundWord
-		}
+	foundWord := ""
+	s.ForEachTextMatch(text, func(word string) bool {
+		foundWord = word
+		return false
+	})
+	if foundWord != "" {
+		return true, foundWord
 	}
 	return false, ""
 }
